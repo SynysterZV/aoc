@@ -2,8 +2,8 @@ import { readFileSync } from "fs"
 
 const data = readFileSync("2022/Inputs/day1.txt").toString()
 const zData = data
-                .split("\n\n")
-                .map(x => x.split("\n")
+                .split("\r\n\r\n")
+                .map(x => x.split("\r\n")
                 .reduce((a,c) => a+parseInt(c), 0))
                 .sort((a,b) => b - a)
 
