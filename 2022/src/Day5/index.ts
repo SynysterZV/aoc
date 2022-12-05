@@ -2,25 +2,29 @@ import { readFileSync } from "fs"
 import _ from "lodash"
 
 const data = readFileSync("2022/Inputs/day5.txt").toString()
-const zData = data
-                .split("\r\n")
+const [legend, moves] = data
+                .split("\r\n\r\n")
+
+const zData = moves
+                .split("\n")
                 .map(x => 
                     x.split(" ")
-                     .map(y => parseInt(y))
-                     .filter(y => !Number.isNaN(y))
+                    .map(y => parseInt(y))
+                    .filter(y => !Number.isNaN(y))
                 )
 
-const stacks = [
-    ["F","T","N","Z","M","G","H","J"],
-    ["J","W","V"],
-    ["H","T","B","J","L","V","G"],
-    ["L","V","D","C","N","J","P","B"],
-    ["G","R","P","M","S","W","F"],
-    ["M","V","N","B","F","C","H","G"],
-    ["R","M","G","H","D"],
-    ["D","Z","V","M","N","H"],
-    ["H","F","N","G"]
-]
+const crates = legend
+                    .split("\n")
+                    .map(crate => Array.from(
+                        new Array(Math.ceil(crate.length/4)),
+                        (_, i) => crate.slice(i * 4 + 1, i * 4 + 2)
+                    ))
+
+const stacks = crates[0]
+                    .map((_, i) => crates
+                            .map(crate => crate[i])
+                            .filter(crate => crate !== ' ')
+                        )
 
 const p1Clone = _.cloneDeep(stacks)
 const p2Clone = _.cloneDeep(stacks)
