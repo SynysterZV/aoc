@@ -61,10 +61,13 @@ function findSize(node: FS) {
 
 findSize(fs)
 
-function findBelow(node: FS): number {
-    const currsize = node.size < 100000 && node.dir ? node.size : 0
-    const sumChildren = Object.entries(node.children).map(([_,v]) => findBelow(v))
-    return Number(currsize) + sumChildren.reduce((a,x) => a+x, 0)
+function findBelow(node: FS, sizes = [0]): number {
+    for(let [_,v] of Object.entries(node.children)) {
+        if(v.dir) sizes.push(v.size)
+        findBelow(v, sizes)
+    }
+
+    return sizes.filter(x => x <= 100000).reduce((a,c) => a+c, 0)
 }
 
 function findSmallest(node: FS, sizes = [0]) {
